@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
     public function Index(){
-        
+
         $usuarios = Usuario::all();
 
         if ($usuarios->isEmpty()) {
@@ -21,7 +22,9 @@ class UsuarioController extends Controller
     public function Registrar(Request $request){
         $usuarios = Usuario::create([
             'nombre' => $request->nombre,
-            'apellido' => $request->apellido
+            'apellido' => $request->apellido,
+            'email' => $request->email,
+            'password' =>Hash::make($request->password)
         ]);
 
         if (!$usuarios) {
@@ -30,4 +33,13 @@ class UsuarioController extends Controller
 
         return response()->json(['message' => 'Usuario registrado correctamente', 'usuario' => $usuarios], 201); 
     }   
+
+
+    public function Login(Request $request){
+        $usuario = Usuario::where('email', $request->email)->first();
+        if (!$usuario || !Hash::check($request->password, $usuario->password)) {
+            return response()->json(['message' => 'Credenciales inválidas'], 401);
+        }
+        return response()->json(['message' => 'Inicio de sesión exitoso', 'usuario' => $usuario], 200); 
+    }
 }
