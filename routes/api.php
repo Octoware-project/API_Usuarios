@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\API\UserController;
 
+// Registrar user -> /api/user (POST)
+Route::post('user', [UserController::class, 'store']);
 
+// Token -> /oauth/token (POST) <- manejado por Passport
 
-Route::post('/user',[UserController::class,"Register"]);
-Route::get('/validate',[UserController::class,"ValidateToken"])->middleware('auth:api');
-Route::get('/logout',[UserController::class,"Logout"])->middleware('auth:api');
-Route::post('/login', [UserController::class, 'login']);
-Route::middleware('auth:api')->put('/user/update', [UserController::class, 'update']);
-
+// Validar token -> /api/validate (GET) protegido por Passport
+Route::middleware('auth:api')->group(function () {
+    Route::get('validate', [UserController::class, 'validateToken']);
+});
