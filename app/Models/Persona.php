@@ -15,8 +15,7 @@ class Persona extends Model
         'CI',
         'Telefono',
         'Direccion',
-        'Estado_Registro',
-        'Tipo_Persona',
+        'Estado_Registro'
     ];
 
     public function user()
