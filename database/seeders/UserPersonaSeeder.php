@@ -39,7 +39,7 @@ class UserPersonaSeeder extends Seeder
             // Insertar persona relacionada
             DB::table('personas')->insert([
                 'user_id' => $user_id,
-                'nombre' => $u[0],
+                'name' => $u[0],
                 'apellido' => $u[1],
                 'CI' => $u[4],
                 'Telefono' => $u[5],

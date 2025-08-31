@@ -13,18 +13,16 @@ return new class extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id'); // Relación con users
-
-            $table->string('nombre')->nullable();
-            $table->string('apellido')->nullable();
-            $table->string('CI')->nullable();
-            $table->string('Telefono')->nullable();
-            $table->string('Direccion')->nullable();
-            $table->string('Estado_Registro')->nullable();
+            $table->unsignedBigInteger('user_id')->unique();
+            $table->string('name');
+            $table->string('apellido');
+            $table->string('CI');
+            $table->string('Telefono');
+            $table->string('Direccion');
+            $table->string('Estado_Registro');
             $table->timestamps();
 
-            // Clave foránea con users
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

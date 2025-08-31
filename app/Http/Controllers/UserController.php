@@ -15,48 +15,57 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function Register(Request $request){
-
-        $validation = Validator::make($request->all(),[
+    public function Register(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'apellido' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed'
+            'CI' => 'required|max:20',
+            'Telefono' => 'required|max:20',
+            'Direccion' => 'required|max:255',
+            'Estado_Registro' => 'required|max:50',
         ]);
 
-        if($validation->fails())
+        if ($validation->fails())
             return response($validation->errors(), 401);
 
-        return $this -> createUser($request);
-        
+        // 👉 PASAR EL REQUEST
+        return $this->createUser($request);
+    }
+    private function createUser($request)
+    {
+        // Crear usuario
+        $user = User::create([
+            'name' => $request->post('name'),
+            'email' => $request->post('email'),
+            'password' => null
+        ]);
+
+        // Crear persona asociada
+        $persona = $user->persona()->create([
+            'name' => $request->post('name'),
+            'apellido' => $request->post('apellido'),
+            'CI' => $request->post('CI'),
+            'Telefono' => $request->post('Telefono'),
+            'Direccion' => $request->post('Direccion'),
+            'Estado_Registro' => $request->post('Estado_Registro')
+        ]);
+
+        return response()->json([
+            'user' => $user,
+            'persona' => $persona
+        ]);
     }
 
- private function createUser($request){
-    // Crear User
-    $user = new User();
-    $user->name = $request->post("name");
-    $user->email = $request->post("email");
-    $user->password = Hash::make($request->post("password"));   
-    $user->save();
-
-    // Crear Persona vinculada (con null en lo demás)
-    $persona = new Persona();
-    $persona->user_id = $user->id;
-    $persona->nombre = $request->post("name");  // opcional, podés dejarlo null también
-    $persona->save();
-
-    return $user;
-}
-
-    public function ValidateToken(Request $request){
+    public function ValidateToken(Request $request)
+    {
         return auth('api')->user();
     }
 
-    public function Logout(Request $request){
+    public function Logout(Request $request)
+    {
         $request->user()->token()->revoke();
         return ['message' => 'Token Revoked'];
-        
-        
     }
-
-    
 }
