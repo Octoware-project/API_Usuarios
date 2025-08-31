@@ -21,39 +21,64 @@ Se debe tomar nota del client_id y client_secret, ya que estos deben ir en cada 
 
 ### Registro 
 
+<<<<<<< HEAD
 Debemos enviar una peticion de tipo POST a `/api/v1/user` con los siguientes campos:
 name: NombreDelUsuario
 email: EmailDelUsuario
 password: password
 
+=======
+POST a `/api/user`:
+
+{
+	name: NombreDelUsuario
+	email: EmailDelUsuario
+	password: password
+}
 **Todos los campos son obligatorios.**
 
 
 ### Login 
-El proceso de Login debe ir a la url `oauth/token`, debe ser de tipo POST, y debe contener los siguientes campos (client_id y client_secret vienen del paso anterior):
-
-```
-'username' => 'correo@correo.com,
-'password' => 'password',
-'grant_type' => 'password',
-'client_id' => 'CLIENT_ID',
-'client_secret' => 'CLIENT_SECRET'
-```
+<<<<<<< HEAD
 
 Esto nos devuelve un JSON con el siguiente contenido:
 
 ```json
+=======
+
+POST a`oauth/token: (client_id y client_secret vienen del paso anterior)
+
+{
+	'username' => 'correo@correo.com,
+	'password' => 'password',
+	'grant_type' => 'password',
+	'client_id' => 'CLIENT_ID',
+	'client_secret' => 'CLIENT_SECRET'
+}
+
+Esto nos devuelve un JSON con el siguiente contenido:
+
+
+>>>>>>> d4e8cc2a6b7a0b8b2c85aab69891a1a27d5632cd
 {
 	"token_type": "Bearer",
 	"expires_in": 31622400,
 	"access_token": "TOKEN",
 	"refresh_token": "REFRESH TOKEN"
 }
+<<<<<<< HEAD
 ```
 
 ### Validación del Token
 
 Para validar el token, enviamos una petición de tipo GET a `/v1/api/validate`, con el token obtenido en un Header llamado `Authorization` con el contenido `Bearer TOKEN_OBTENIDO`.
+=======
+
+### Validación del Token
+
+GET a `/api/validate` con el token obtenido en un Header llamado `Authorization` 
+con el contenido `Bearer TOKEN_OBTENIDO`.
+>>>>>>> d4e8cc2a6b7a0b8b2c85aab69891a1a27d5632cd
 
 Esto nos devuelve los datos del usuario para procesarlo si se desea. Si no se envia un token, o no se envia un token valido, el endpoint no devuelve nada.
 

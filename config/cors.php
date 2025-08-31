@@ -1,6 +1,7 @@
 <?php
 
 return [
+<<<<<<< HEAD
 
     /*
     |--------------------------------------------------------------------------
@@ -16,6 +17,9 @@ return [
     */
 
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'oauth/token'],
+=======
+    'paths' => ['api/*', 'oauth/*', 'sanctum/csrf-cookie'],
+>>>>>>> d4e8cc2a6b7a0b8b2c85aab69891a1a27d5632cd
 
     'allowed_methods' => ['*'],
 
@@ -30,5 +34,9 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
+<<<<<<< HEAD
 
 ];
+=======
+];
+>>>>>>> d4e8cc2a6b7a0b8b2c85aab69891a1a27d5632cd
