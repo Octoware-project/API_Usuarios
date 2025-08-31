@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('Direccion');
             $table->string('Estado_Registro');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
         });
