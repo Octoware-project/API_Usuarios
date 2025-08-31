@@ -18,7 +18,7 @@ class CheckPersonaEstado
                 $user = User::where('email', $username)->first();
                 if ($user) {
                     $persona = Persona::where('user_id', $user->id)->first();
-                    if (!$persona || $persona->Estado_Registro !== 'Aceptado') {
+                    if (!$persona || $persona->estadoRegistro !== 'Aceptado') {
                         return response()->json(['error' => 'Usuario Pendiente'], 403);
                     }
                 }

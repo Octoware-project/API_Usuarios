@@ -17,9 +17,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('apellido');
             $table->string('CI');
-            $table->string('Telefono');
-            $table->string('Direccion');
-            $table->string('Estado_Registro');
+            $table->string('telefono');
+            $table->string('direccion');
+            $table->string('unidadHabitacional')->nullable();
+            $table->string('estadoCivil')->nullable();
+            $table->string('genero')->nullable();
+            $table->date('fechaNacimiento')->nullable();
+            $table->string('ocupacion')->nullable();
+            $table->string('nacionalidad')->nullable();
+            $table->string('estadoRegistro');
+            $table->string('activo')->default('No');
             $table->timestamps();
             $table->softDeletes();
 

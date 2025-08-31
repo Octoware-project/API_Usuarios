@@ -14,24 +14,49 @@ class UserPersonaSeeder extends Seeder
     public function run(): void
     {
         $usuarios = [
-            ['Juan', 'Perez', 'juan@example.com', '123456', '1234567', '555-1234', 'Calle Falsa 123'],
-            ['Maria', 'Gomez', 'maria@example.com', '123456', '7654321', '555-5678', 'Avenida Siempre Viva 742'],
-            ['Carlos', 'Lopez', 'carlos@example.com', '123456', '2345678', '555-2345', 'Calle Luna 10'],
-            ['Lucia', 'Martinez', 'lucia@example.com', '123456', '8765432', '555-8765', 'Calle Sol 99'],
-            ['Pedro', 'Ramirez', 'pedro@example.com', '123456', '3456789', '555-3456', 'Avenida Central 50'],
-            ['Ana', 'Fernandez', 'ana@example.com', '123456', '9876543', '555-9876', 'Calle Norte 77'],
-            ['Luis', 'Gonzalez', 'luis@example.com', '123456', '4567890', '555-4567', 'Calle Sur 21'],
-            ['Sofia', 'Diaz', 'sofia@example.com', '123456', '8765432', '555-8765', 'Avenida Oeste 5'],
-            ['Miguel', 'Vargas', 'miguel@example.com', '123456', '5678901', '555-5678', 'Calle Este 12'],
-            ['Carla', 'Torres', 'carla@example.com', '123456', '7654321', '555-7654', 'Avenida Principal 88'],
+            [
+                'name' => 'Juan',
+                'apellido' => 'Perez',
+                'email' => 'juan@example.com',
+                'password' => null,
+                'CI' => '1234567',
+                'Telefono' => '555-1234',
+                'Direccion' => 'Calle Falsa 123',
+                'UnidadHabitacional' => 'A1',
+                'EstadoCivil' => 'Soltero',
+                'Genero' => 'Masculino',
+                'FechaNacimiento' => '1990-01-01',
+                'Ocupacion' => 'Ingeniero',
+                'Nacionalidad' => 'Argentina',
+                'estadoRegistro' => 'Pendiente',
+                'activo' => 'No'
+            ],
+            [
+                'name' => 'Maria',
+                'apellido' => 'Gomez',
+                'email' => 'maria@example.com',
+                'password' => '123456',
+                'CI' => '7654321',
+                'Telefono' => '555-5678',
+                'Direccion' => 'Avenida Siempre Viva 742',
+                'UnidadHabitacional' => 'B2',
+                'EstadoCivil' => 'Casada',
+                'Genero' => 'Femenino',
+                'FechaNacimiento' => '1985-05-10',
+                'Ocupacion' => 'Doctora',
+                'Nacionalidad' => 'Uruguaya',
+                'estadoRegistro' => 'Pendiente',
+                'activo' => 'Si'
+            ],
+            // ...agrega más usuarios si lo deseas...
         ];
 
         foreach ($usuarios as $u) {
             // Insertar usuario y obtener ID
             $user_id = DB::table('users')->insertGetId([
-                'name' => $u[0] . ' ' . $u[1],
-                'email' => $u[2],
-                'password' => Hash::make($u[3]),
+                'name' => $u['name'] . ' ' . $u['apellido'],
+                'email' => $u['email'],
+                'password' => Hash::make($u['password']),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -39,12 +64,19 @@ class UserPersonaSeeder extends Seeder
             // Insertar persona relacionada
             DB::table('personas')->insert([
                 'user_id' => $user_id,
-                'name' => $u[0],
-                'apellido' => $u[1],
-                'CI' => $u[4],
-                'Telefono' => $u[5],
-                'Direccion' => $u[6],
-                'Estado_Registro' => 'Pendiente',
+                'name' => $u['name'],
+                'apellido' => $u['apellido'],
+                'CI' => $u['CI'],
+                'Telefono' => $u['Telefono'],
+                'Direccion' => $u['Direccion'],
+                'UnidadHabitacional' => $u['UnidadHabitacional'],
+                'EstadoCivil' => $u['EstadoCivil'],
+                'Genero' => $u['Genero'],
+                'FechaNacimiento' => $u['FechaNacimiento'],
+                'Ocupacion' => $u['Ocupacion'],
+                'Nacionalidad' => $u['Nacionalidad'],
+                'estadoRegistro' => $u['estadoRegistro'],
+                'activo' => $u['activo'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

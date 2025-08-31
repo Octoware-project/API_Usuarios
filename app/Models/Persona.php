@@ -14,11 +14,16 @@ class Persona extends Model
         'user_id',
         'name',
         'apellido',
-        'email',
         'CI',
-        'Telefono',
-        'Direccion',
-        'Estado_Registro'
+        'telefono',
+        'direccion',
+        'unidadHabitacional',
+        'estadoCivil',
+        'genero',
+        'fechaNacimiento',
+        'ocupacion',
+        'nacionalidad',
+        'estadoRegistro'
     ];
 
     public function user()
