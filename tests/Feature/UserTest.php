@@ -5,11 +5,42 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+
 
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Ejecutar migraciones
+        $this->artisan('migrate');
+        // Instalar Passport (crea los clients)
+        $this->artisan('passport:install');
+
+        // Crear usuario de prueba
+        $user = \App\Models\User::factory()->create([
+            'email' => 'usuario@email.com',
+            'password' => bcrypt('12345678'),
+        ]);
+        // Crear persona asociada
+        $user->persona()->create([
+            'name' => 'Usuario',
+            'apellido' => 'Test',
+            'CI' => '12345678',
+            'estadoRegistro' => 'Aceptado',
+        ]);
+
+        // Obtener el primer client creado por passport:install
+    $client = DB::table('oauth_clients')->where('password_client', true)->first();
+    $this->clientId = $client->id;
+    $this->clientSecret = $client->secret;
+    }
     /**
      * A basic feature test example.
      *
@@ -18,12 +49,10 @@ class UserTest extends TestCase
 
 
     // Client creado desde seeders
-     private $clientId = 100;
-     private $clientSecret = "wsBa0mp4jwSTYssUGHX5xoqD9IC0X95Gfpg0w3uY";
-
-     // Usuario creado desde seeders
-     private $userName = "usuario@email.com";
-     private $userPassword = "12345678";
+    private $clientId;
+    private $clientSecret;
+    private $userName = "usuario@email.com";
+    private $userPassword = "12345678";
 
 
      public function test_ObtenerTokenConClientIdValido()
@@ -37,6 +66,10 @@ class UserTest extends TestCase
             "client_id" => $this -> clientId,
             "client_secret" => $this -> clientSecret
         ]);
+
+        if ($response->status() !== 200) {
+            fwrite(STDOUT, "\nRESPONSE: " . $response->getContent() . "\n");
+        }
 
         // Validamos status 200
         $response->assertStatus(200);
@@ -78,7 +111,7 @@ class UserTest extends TestCase
 
     public function test_ValidarTokenSinEnviarToken()
     {
-        $response = $this->get('/api/v1/validate');
+    $response = $this->get('/api/validate');
 
         // Validamos obtener status 500
         $response->assertStatus(500);
@@ -88,8 +121,8 @@ class UserTest extends TestCase
     public function test_ValidarTokenConTokenInvalido()
     {
         // Enviamos un string random como Token
-        $response = $this->get('/api/v1/validate',[
-            [ "Authorization" => "Bearer " . Str::Random(40)]
+        $response = $this->get('/api/validate', [
+            "Authorization" => "Bearer " . Str::Random(40)
         ]);
 
         // Validamos obtener Status 500
@@ -113,9 +146,9 @@ class UserTest extends TestCase
         
         // Enviamos peticion para validar token
 
-        $response = $this->get('/api/v1/validate',
-            [ "Authorization" => "Bearer " . $token ['access_token']]
-        );
+        $response = $this->get('/api/validate', [
+            "Authorization" => "Bearer " . $token['access_token']
+        ]);
 
         // Validamos obtener status 200
         $response->assertStatus(200);
@@ -125,7 +158,7 @@ class UserTest extends TestCase
     public function test_LogoutSinToken()
     {
         // Enviamos peticion sin Token
-        $response = $this->get('/api/v1/logout');
+    $response = $this->get('/api/logout');
 
         // Validamos obtener Status 500
         $response->assertStatus(500);
@@ -135,8 +168,8 @@ class UserTest extends TestCase
     public function test_LogoutConTokenInvalido()
     {
         // Enviamos un string random como Token
-        $response = $this->get('/api/v1/logout',[
-            [ "Authorization" => "Bearer " . Str::Random(40)]
+        $response = $this->get('/api/logout', [
+            "Authorization" => "Bearer " . Str::Random(40)
         ]);
 
         // Validamos obtener status 500
@@ -158,9 +191,9 @@ class UserTest extends TestCase
         $token = json_decode($tokenResponse -> content(),true);
         
         // Enviamos peticion para validar token
-        $response = $this->get('/api/v1/logout',
-            [ "Authorization" => "Bearer " . $token ['access_token']]
-        );
+        $response = $this->get('/api/logout', [
+            "Authorization" => "Bearer " . $token['access_token']
+        ]);
 
         // Validamos obtener status 200
         $response->assertStatus(200);

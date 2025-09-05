@@ -18,18 +18,17 @@ class UserPersonaSeeder extends Seeder
                 'name' => 'Juan',
                 'apellido' => 'Perez',
                 'email' => 'juan@example.com',
-                'password' => null,
+                'password' => '123456',
                 'CI' => '1234567',
                 'Telefono' => '555-1234',
                 'Direccion' => 'Calle Falsa 123',
-                'UnidadHabitacional' => 'A1',
                 'EstadoCivil' => 'Soltero',
                 'Genero' => 'Masculino',
                 'FechaNacimiento' => '1990-01-01',
                 'Ocupacion' => 'Ingeniero',
                 'Nacionalidad' => 'Argentina',
-                'estadoRegistro' => 'Pendiente',
-                'activo' => 'No'
+                'estadoRegistro' => 'Aceptado',
+
             ],
             [
                 'name' => 'Maria',
@@ -39,16 +38,30 @@ class UserPersonaSeeder extends Seeder
                 'CI' => '7654321',
                 'Telefono' => '555-5678',
                 'Direccion' => 'Avenida Siempre Viva 742',
-                'UnidadHabitacional' => 'B2',
                 'EstadoCivil' => 'Casada',
                 'Genero' => 'Femenino',
                 'FechaNacimiento' => '1985-05-10',
                 'Ocupacion' => 'Doctora',
                 'Nacionalidad' => 'Uruguaya',
                 'estadoRegistro' => 'Pendiente',
-                'activo' => 'Si'
+
             ],
-            // ...agrega más usuarios si lo deseas...
+            [
+                'name' => 'Carlos',
+                'apellido' => 'Lopez',
+                'email' => 'carlos.lopez@example.com',
+                'password' => '123456',
+                'CI' => '11223344',
+                'Telefono' => null,
+                'Direccion' => null,
+                'EstadoCivil' => null,
+                'Genero' => null,
+                'FechaNacimiento' => null,
+                'Ocupacion' => null,
+                'Nacionalidad' => null,
+                'estadoRegistro' => 'Pendiente',
+
+            ],
         ];
 
         foreach ($usuarios as $u) {
@@ -69,14 +82,12 @@ class UserPersonaSeeder extends Seeder
                 'CI' => $u['CI'],
                 'Telefono' => $u['Telefono'],
                 'Direccion' => $u['Direccion'],
-                'UnidadHabitacional' => $u['UnidadHabitacional'],
                 'EstadoCivil' => $u['EstadoCivil'],
                 'Genero' => $u['Genero'],
                 'FechaNacimiento' => $u['FechaNacimiento'],
                 'Ocupacion' => $u['Ocupacion'],
                 'Nacionalidad' => $u['Nacionalidad'],
                 'estadoRegistro' => $u['estadoRegistro'],
-                'activo' => $u['activo'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

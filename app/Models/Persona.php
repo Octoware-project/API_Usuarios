@@ -17,7 +17,6 @@ class Persona extends Model
         'CI',
         'telefono',
         'direccion',
-        'unidadHabitacional',
         'estadoCivil',
         'genero',
         'fechaNacimiento',

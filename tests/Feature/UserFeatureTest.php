@@ -17,20 +17,20 @@ class UserFeatureTest extends TestCase
     /** @test */
     public function puede_registrar_usuario()
     {
+
         $data = [
             'name' => 'Juan',
             'apellido' => 'Pérez',
-            'email' => 'juan@example.com',
             'CI' => '12345678',
-            'Telefono' => '099111222',
-            'Direccion' => 'Calle falsa 123',
-            'Estado_Registro' => 'activo',
+            'email' => 'juan31n@example.com',
+            'password' => 'miclave123',
+            'estadoRegistro' => 'Pendiente',
         ];
 
         $response = $this->postJson('/api/user', $data);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('users', ['email' => 'juan@example.com']);
+    $this->assertDatabaseHas('users', ['email' => 'juan31n@example.com']);
         $this->assertDatabaseHas('personas', ['CI' => '12345678']);
     }
 
