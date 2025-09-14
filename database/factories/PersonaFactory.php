@@ -13,13 +13,32 @@ class PersonaFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => User::factory(),
+            // 'user_id' se asigna manualmente en el seeder para evitar usuarios huérfanos
             'name' => $this->faker->firstName,
             'apellido' => $this->faker->lastName,
             'CI' => $this->faker->numerify('########'),
-            'Telefono' => $this->faker->phoneNumber,
-            'Direccion' => $this->faker->address,
-            'Estado_Registro' => 'Aceptado',
+            'telefono' => $this->faker->phoneNumber,
+            'direccion' => $this->faker->address,
+            'estadoCivil' => $this->faker->randomElement(['Soltero', 'Casado', 'Divorciado', 'Viudo']),
+            'genero' => $this->faker->randomElement(['Masculino', 'Femenino', 'Otro']),
+            'fechaNacimiento' => $this->faker->date(),
+            'ocupacion' => $this->faker->jobTitle,
+            'nacionalidad' => $this->faker->country,
+            'estadoRegistro' => 'Aceptado',
         ];
+    }
+
+    public function pendiente()
+    {
+        return $this->state([
+            'estadoRegistro' => 'Pendiente',
+        ]);
+    }
+
+    public function aceptado()
+    {
+        return $this->state([
+            'estadoRegistro' => 'Aceptado',
+        ]);
     }
 }

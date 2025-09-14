@@ -15,14 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
-        \App\Models\User::factory(1)->create([
-            "name" => "usuario",
-            "email" => "usuario@email.com"
-        ]);
+
+    $this->call(\Database\Seeders\PersonaEstadoSeeder::class);
 
         Client::create([
-            'id' => 100,
+            'id' => 1,
             'name' => 'Tests',
             'secret' => "wsBa0mp4jwSTYssUGHX5xoqD9IC0X95Gfpg0w3uY",
             'redirect' => 'http://localhost',
