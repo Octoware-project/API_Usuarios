@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 
 
-class UserController extends Controller
+class UserController extends Controller   
 {
     public function Register(Request $request)
     {

@@ -11,6 +11,9 @@ Route::get('/logout',[UserController::class,"Logout"])->middleware('auth:api');
 Route::post('/user/change-password', [App\Http\Controllers\UserController::class, 'ChangePassword'])->middleware('auth:api');
 
 
+// Ruta para login usando client_id y client_secret desde .env
+Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
+
 // Nueva ruta para completar datos de persona
 Route::post('/completar-datos', [UserController::class, 'completarDatos'])->middleware('auth:api');
 
