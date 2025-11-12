@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 
 
-class UserController extends Controller
+class UserController extends Controller   
 {
     public function Register(Request $request)
     {
@@ -56,20 +56,38 @@ class UserController extends Controller
 
     public function ValidateToken(Request $request)
     {
-        $user = auth('api')->user();
+        // Usar eager loading para optimizar la consulta
+        $user = auth('api')->user()->load('persona');
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        $persona = $user->persona;
-        return response()->json([
+        
+        // Construir respuesta optimizada con solo los campos necesarios
+        $response = [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                // Agrega aquí otros campos si lo necesitas
+                'created_at' => $user->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $user->updated_at->format('Y-m-d H:i:s'),
             ],
-            'persona' => $persona
-        ]);
+            'persona' => $user->persona ? [
+                'id' => $user->persona->id,
+                'name' => $user->persona->name,
+                'apellido' => $user->persona->apellido,
+                'CI' => $user->persona->CI,
+                'telefono' => $user->persona->telefono,
+                'direccion' => $user->persona->direccion,
+                'estadoCivil' => $user->persona->estadoCivil,
+                'genero' => $user->persona->genero,
+                'fechaNacimiento' => $user->persona->fechaNacimiento,
+                'ocupacion' => $user->persona->ocupacion,
+                'nacionalidad' => $user->persona->nacionalidad,
+                'estadoRegistro' => $user->persona->estadoRegistro,
+            ] : null
+        ];
+        
+        return response()->json($response)->header('Cache-Control', 'no-cache, must-revalidate');
     }
 
     public function Logout(Request $request)
@@ -78,91 +96,5 @@ class UserController extends Controller
         return ['message' => 'Token Revoked'];
     }
 
-    // Completar datos de la persona autenticada
-    public function completarDatos(Request $request)
-    {
-        $user = auth('api')->user();
-        if (!$user) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
-        $persona = $user->persona;
-        if (!$persona) {
-            return response()->json(['message' => 'No se encontró la persona asociada'], 404);
-        }
 
-        $validator = Validator::make($request->all(), [
-            'telefono' => 'required|string|max:30',
-            'direccion' => 'required|string|max:255',
-            'estadoCivil' => 'required|string|max:50',
-            'genero' => 'required|string|max:50',
-            'fechaNacimiento' => 'required|date',
-            'ocupacion' => 'required|string|max:100',
-            'nacionalidad' => 'required|string|max:100',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Datos inválidos',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-    // Actualizar datos (solo los permitidos)
-    $persona->telefono = $request->input('telefono');
-    $persona->direccion = $request->input('direccion');
-    $persona->estadoCivil = $request->input('estadoCivil');
-    $persona->genero = $request->input('genero');
-    $persona->fechaNacimiento = $request->input('fechaNacimiento');
-    $persona->ocupacion = $request->input('ocupacion');
-    $persona->nacionalidad = $request->input('nacionalidad');
-    $persona->estadoRegistro = 'Aceptado';
-    $persona->save();
-
-        return response()->json([
-            'message' => 'Datos completados correctamente',
-            'persona' => $persona
-        ]);
-    }
-
-        // Editar datos de persona autenticada (solo campos editables)
-    public function editarDatosPersona(Request $request)
-    {
-        $user = auth('api')->user();
-        if (!$user) {
-            return response()->json(['message' => 'No autenticado'], 401);
-        }
-        $persona = $user->persona;
-        if (!$persona) {
-            return response()->json(['message' => 'No se encontró la persona asociada'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'telefono' => 'required|string|max:30',
-            'direccion' => 'required|string|max:255',
-            'estadoCivil' => 'required|string|max:50',
-            'genero' => 'required|string|max:50',
-            'fechaNacimiento' => 'required|date',
-            'ocupacion' => 'required|string|max:100',
-            'nacionalidad' => 'required|string|max:100',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Datos inválidos',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $persona->telefono = $request->input('telefono');
-        $persona->direccion = $request->input('direccion');
-        $persona->estadoCivil = $request->input('estadoCivil');
-        $persona->genero = $request->input('genero');
-        $persona->fechaNacimiento = $request->input('fechaNacimiento');
-        $persona->ocupacion = $request->input('ocupacion');
-        $persona->nacionalidad = $request->input('nacionalidad');
-        $persona->save();
-
-        return response()->json([
-            'message' => 'Datos personales actualizados correctamente',
-            'persona' => $persona
-        ]);
-    }
 }

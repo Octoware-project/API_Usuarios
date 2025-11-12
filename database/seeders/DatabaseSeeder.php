@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -16,17 +15,5 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-    $this->call(\Database\Seeders\PersonaEstadoSeeder::class);
-
-        Client::create([
-            'id' => 1,
-            'name' => 'Tests',
-            'secret' => "wsBa0mp4jwSTYssUGHX5xoqD9IC0X95Gfpg0w3uY",
-            'redirect' => 'http://localhost',
-            'provider' => 'users',
-            'personal_access_client' => false,
-            'password_client' => true,
-            'revoked' => false
-        ]);
     }
 }

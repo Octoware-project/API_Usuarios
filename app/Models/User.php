@@ -13,6 +13,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    /**
+     * Relaciones que siempre deben ser cargadas
+     */
+    protected $with = ['persona'];
+
     public function persona()
     {
         return $this->hasOne(Persona::class);
