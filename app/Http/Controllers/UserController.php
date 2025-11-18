@@ -28,19 +28,19 @@ class UserController extends Controller
         if ($validation->fails())
             return response($validation->errors(), 401);
 
-        // 👉 PASAR EL REQUEST
+        
         return $this->createUser($request);
     }
     private function createUser($request)
     {
-        // Crear usuario
+        
         $user = User::create([
             'name' => $request->post('name'),
             'email' => $request->post('email'),
             'password' => Hash::make($request->post('password')),
         ]);
 
-        // Crear persona asociada con los nuevos campos
+       
         $persona = $user->persona()->create([
             'name' => $request->post('name'),
             'apellido' => $request->post('apellido'),
@@ -56,13 +56,13 @@ class UserController extends Controller
 
     public function ValidateToken(Request $request)
     {
-        // Usar eager loading para optimizar la consulta
+       
         $user = auth('api')->user()->load('persona');
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         
-        // Construir respuesta optimizada con solo los campos necesarios
+       
         $response = [
             'user' => [
                 'id' => $user->id,
